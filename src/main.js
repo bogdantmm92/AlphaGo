@@ -13,16 +13,18 @@ import CONST from './const';
 
 export default class Main extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.setupSocket();
+  }
 
-    this.socket = io(CONST.SERVER_URL, {
-      jsonp: false,
-      transports: ['websocket']
-    });
-    this.socket.connect();
+  setupSocket() {
+    this.socket = io(CONST.SERVER_URL);
 
     this.socket.on('connect', () => {
       console.log('connected!');
+    });
+    this.socket.on('disconnect', () => {
+      console.log('disconnected');
     });
   }
 
