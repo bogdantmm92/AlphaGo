@@ -5,13 +5,16 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  Dimensions
 } from 'react-native';
 
 import io from 'socket.io-client';
 
 import Board from './board';
 import CONST from './const';
+
+var {height, width} = Dimensions.get('window');
 
 export default class Main extends Component {
   constructor(props) {
@@ -79,7 +82,7 @@ export default class Main extends Component {
         <Text style={styles.welcome}>
           Main Game
         </Text>
-        <Board />
+        <Board size={19} width={width} height={width} />
       </View>
     );
   }
