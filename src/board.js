@@ -9,6 +9,11 @@ import {
   Animated
 } from 'react-native';
 
+import _ from 'lodash';
+import {lineHeight, padding, handPickerWidth, handPickerHeight, stoneSize} from './const';
+import {selectionInAnimation, selectionOutAnimation} from './animations';
+import Grid from './grid';
+
 export default class Board extends Component {
   constructor(){
     super();
@@ -50,32 +55,8 @@ export default class Board extends Component {
           x: closestCellCoordinates.x,
           y: closestCellCoordinates.y
         });
-        Animated.parallel([
-          Animated.spring(
-            this.state.stone.scale, {
-              toValue: 1.1,
-              friction: 3
-            }
-          ),
-          Animated.timing(
-            this.state.stone.opacity, {
-              toValue: 1,
-              duration: 200
-            }
-          ),
-          Animated.spring(
-            this.state.handPicker.scale, {
-              toValue: 1.1,
-              friction: 3
-            }
-          ),
-          Animated.timing(
-            this.state.handPicker.opacity, {
-              toValue: 1,
-              duration: 200
-            }
-          )
-        ]).start();
+
+        selectionInAnimation(this.state.stone, this.state.handPicker);
       },
       onPanResponderMove: (evt, gestureState) => {
         const closestCellCoordinates = this.closestCellCoordinatesFromNativeEvent(evt.nativeEvent);
@@ -94,41 +75,16 @@ export default class Board extends Component {
         this.onDropStone(evt.nativeEvent);
         this.state.handPicker.xy.flattenOffset();
         this.state.stone.xy.flattenOffset();
-        Animated.parallel([
-          Animated.spring(
-            this.state.stone.scale, {
-              toValue: 1,
-              friction: 3
-            }
-          ),
-          Animated.timing(
-            this.state.stone.opacity, {
-              toValue: 0,
-              duration: 200
-            }
-          ),
-          Animated.spring(
-            this.state.handPicker.scale, {
-              toValue: 1,
-              friction: 3
-            }
-          ),
-          Animated.timing(
-            this.state.handPicker.opacity, {
-              toValue: 0,
-              duration: 200
-            }
-          )
-        ]).start();
+
+        selectionOutAnimation(this.state.stone, this.state.handPicker);
       },
     });
   }
 
   onDropStone(nativeEvent) {
-    var stoneCoordinates = this.closestCellCoordinatesFromNativeEvent(nativeEvent);
-    var index = this.closestCellIndex(stoneCoordinates);
-    var moves = this.state.moves.slice();
-    moves.push({
+    let stoneCoordinates = this.closestCellCoordinatesFromNativeEvent(nativeEvent);
+    let index = this.closestCellIndex(stoneCoordinates);
+    let moves = _.concat(this.state.moves, {
       x: index.x,
       y: index.y,
       color: this.state.currentColor
@@ -146,23 +102,23 @@ export default class Board extends Component {
   stoneCoordinates(handPickerCoordinates) {
     return {
       x: handPickerCoordinates.x + handPickerWidth * 0.25,
-      y: handPickerCoordinates.y - stoneHeight * 0.4
+      y: handPickerCoordinates.y - stoneSize * 0.4
     }
   }
 
   stoneCoordinatesFromIndex(index) {
     let spaceBetweenLines = (this.props.width - this.props.size * lineHeight - 2 * padding) / (this.props.size - 1);
     return {
-      x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneWidth / 2,
-      y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneHeight / 2
+      x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneSize / 2,
+      y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneSize / 2
     }
   }
 
   closestCellIndex(coordinates) {
     let spaceBetweenLines = (this.props.width - this.props.size * lineHeight - 2 * padding) / (this.props.size - 1);
     return {
-      x: Math.round((coordinates.x - padding + stoneWidth / 2) / (lineHeight + spaceBetweenLines)),
-      y: Math.round((coordinates.y - padding + stoneHeight / 2) / (lineHeight + spaceBetweenLines))
+      x: Math.round((coordinates.x - padding + stoneSize / 2) / (lineHeight + spaceBetweenLines)),
+      y: Math.round((coordinates.y - padding + stoneSize / 2) / (lineHeight + spaceBetweenLines))
     }
   }
   closestCellCoordinates(coordinates) {
@@ -222,35 +178,34 @@ export default class Board extends Component {
   }
 
   renderStones() {
-    var stones = []
-    for (var i = 0; i < this.state.moves.length; i ++) {
-      var move = this.state.moves[i];
+    let stones = _.map(this.state.moves, (move, key) => {
       var index = {
         x: move.x,
         y: move.y
       };
       let xy = this.stoneCoordinatesFromIndex(index);
       let imageStyle = [styles.stone, {transform: [{translateX: xy.x}, {translateY: xy.y}]}];
-      stones.push(this.renderNormalStone(imageStyle, move.color));
-    }
+      return this.renderNormalStone(imageStyle, move.color, key);
+    });
     return stones;
   }
 
-  renderNormalStone(imageStyle, stoneColor) {
-    if (stoneColor === 1) {
-      return <Animated.Image style={imageStyle} source={require('./img/black_stone.png')} />
-    } else {
-      return <Animated.Image style={imageStyle} source={require('./img/white_stone.png')} />
-    }
-  }
-  renderStone() {
+  renderSelectionStone() {
     let { xy, scale, opacity }  = this.state.stone;
     let [translateX, translateY] = [xy.x, xy.y];
 
     var imageStyle = [styles.stone, {
       transform: [{translateX}, {translateY}, {scale}]
     }, {opacity}];
-    return this.renderNormalStone(imageStyle, this.state.currentColor);
+    return this.renderNormalStone(imageStyle, this.state.currentColor, "-1");
+  }
+
+  renderNormalStone(imageStyle, stoneColor, key) {
+    if (stoneColor === 1) {
+      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/black_stone.png')} />
+    } else {
+      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/white_stone.png')} />
+    }
   }
 
   render() {
@@ -263,22 +218,14 @@ export default class Board extends Component {
         backgroundColor: '#D9A664'
       }}
       {...this._panResponder.panHandlers}>
-        {this.renderLines()}
+        <Grid width={this.props.width} size={this.props.size} />
         {this.renderStones()}
-        {this.renderStone()}
+        {this.renderSelectionStone()}
         {this.renderHandPicker()}
       </View>
     );
   }
 }
-
-const handPickerWidth = 60;
-const handPickerHeight = 60;
-const stoneWidth = 16;
-const stoneHeight = 16;
-
-const lineHeight = 2;
-const padding = 10;
 
 const styles = StyleSheet.create({
   handPicker: {
@@ -288,7 +235,7 @@ const styles = StyleSheet.create({
   },
   stone: {
     position: 'absolute',
-    width: stoneWidth,
-    height: stoneHeight
+    width: stoneSize,
+    height: stoneSize
   }
 });

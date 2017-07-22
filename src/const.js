@@ -1,9 +1,17 @@
+let SERVER_URL = "http://192.168.1.230:3000";
 
-class Const {
-	constructor() {
-		// to find your id, run ifconfig in terminal and look for  en0
-		this.SERVER_URL = "http://192.168.1.230:3000";
-	}
-}
-let cnst = new Const();
-export default cnst;
+const handPickerWidth = 60;
+const handPickerHeight = 60;
+const stoneSize = 16;
+const lineHeight = 2;
+const padding = 10;
+
+export {
+	SERVER_URL,
+
+	handPickerWidth,
+	handPickerHeight,
+	stoneSize,
+	lineHeight,
+	padding
+};

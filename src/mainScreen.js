@@ -11,12 +11,16 @@ import {
 
 import io from 'socket.io-client';
 
-import Board from './board';
-import CONST from './const';
+import Game from './game';
+import {SERVER_URL} from './const';
 
 var {height, width} = Dimensions.get('window');
 
-export default class Main extends Component {
+export default class MainScreen extends Component {
+  static navigationOptions = {
+    title: 'Welcome',
+  };
+
   constructor(props) {
     super(props);
     this.state = {user: null};
@@ -24,7 +28,7 @@ export default class Main extends Component {
   }
 
   setupSocket() {
-    this.socket = io(CONST.SERVER_URL);
+    this.socket = io(SERVER_URL);
 
     this.socket.on('connect', this.handleConnect.bind(this));
     this.socket.on('disconnect', this.handleDisconnect.bind(this));
@@ -79,10 +83,7 @@ export default class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Main Game
-        </Text>
-        <Board size={19} width={width} height={width} />
+        <Game />
       </View>
     );
   }
