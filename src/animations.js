@@ -41,7 +41,7 @@ function selectionOutAnimation(stone, handPicker) {
     ),
     Animated.timing(
       stone.opacity, {
-        toValue: 0,
+        toValue:1,
         duration: 200
       }
     ),

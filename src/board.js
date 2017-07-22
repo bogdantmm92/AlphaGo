@@ -13,24 +13,30 @@ import _ from 'lodash';
 import {lineHeight, padding, handPickerWidth, handPickerHeight, stoneSize} from './const';
 import {selectionInAnimation, selectionOutAnimation} from './animations';
 import Grid from './grid';
+import Stones from './stones';
 
 export default class Board extends Component {
   constructor(){
     super();
     this.state = {
       moves: [],
-      currentColor: 1,
-      handPicker: {
-        xy: new Animated.ValueXY(),
-        scale: new Animated.Value(1),
-        opacity: new Animated.Value(0)
-      },
-      stone: {
-        xy: new Animated.ValueXY(),
-        scale: new Animated.Value(1),
-        opacity: new Animated.Value(0)
-      }
-    }
+      currentColor: 1
+    };
+    this.handPicker = {
+      xy: new Animated.ValueXY(),
+      scale: new Animated.Value(1),
+      opacity: new Animated.Value(0)
+    };
+    this.selectionWhiteStone = {
+      xy: new Animated.ValueXY(),
+      scale: new Animated.Value(1),
+      opacity: new Animated.Value(0)
+    };
+    this.selectionBlackStone = {
+      xy: new Animated.ValueXY(),
+      scale: new Animated.Value(1),
+      opacity: new Animated.Value(0)
+    };
   }
 
   componentWillMount() {
@@ -44,52 +50,75 @@ export default class Board extends Component {
 
       onPanResponderGrant: (evt, gestureState) => {
         const handPickerCoordinates = this.handPickerCoordinates(evt.nativeEvent);
-        this.state.handPicker.xy.setOffset({
+        this.handPicker.xy.setOffset({
           x: handPickerCoordinates.x,
           y: handPickerCoordinates.y
         });
         const stoneCoordinates = this.stoneCoordinates(handPickerCoordinates);
-        const closestCellCoordinates = this.closestCellCoordinates(stoneCoordinates);
+        this.selectedCellCoordinates = this.closestCellCoordinates(stoneCoordinates);
 
-        this.state.stone.xy.setValue({
-          x: closestCellCoordinates.x,
-          y: closestCellCoordinates.y
+        this.selectedStoneState().xy.setValue({
+          x: this.selectedCellCoordinates.x,
+          y: this.selectedCellCoordinates.y
         });
 
-        selectionInAnimation(this.state.stone, this.state.handPicker);
+        this.unselectedStoneState().opacity.setValue(0);
+
+
+        selectionInAnimation(this.selectedStoneState(), this.handPicker);
       },
       onPanResponderMove: (evt, gestureState) => {
-        const closestCellCoordinates = this.closestCellCoordinatesFromNativeEvent(evt.nativeEvent);
+        this.selectedCellCoordinates = this.closestCellCoordinatesFromNativeEvent(evt.nativeEvent);
+        let index = this.closestCellIndex(this.selectedCellCoordinates);
 
-        this.state.stone.xy.setValue({
-          x: closestCellCoordinates.x,
-          y: closestCellCoordinates.y
-        });
+        // if (this.indexInBounds(index)) {
+          this.selectedStoneState().xy.setValue({
+            x: this.selectedCellCoordinates.x,
+            y: this.selectedCellCoordinates.y
+          });
 
-        Animated.event([null, {
-          dx: this.state.handPicker.xy.x,
-          dy: this.state.handPicker.xy.y
-        }])(evt, gestureState);
+          Animated.event([null, {
+            dx: this.handPicker.xy.x,
+            dy: this.handPicker.xy.y
+          }])(evt, gestureState);
+        // } else {
+        //   this.selectedStoneState().opacity.setValue(0);
+        //   this.handPicker.opacity.setValue(0);
+        // }
       },
       onPanResponderRelease: (evt, gestureState) => {
         this.onDropStone(evt.nativeEvent);
-        this.state.handPicker.xy.flattenOffset();
-        this.state.stone.xy.flattenOffset();
+        this.handPicker.xy.flattenOffset();
+        this.selectedStoneState().xy.flattenOffset();
 
-        selectionOutAnimation(this.state.stone, this.state.handPicker);
+        selectionOutAnimation(this.selectedStoneState(), this.handPicker);
       },
     });
   }
 
   onDropStone(nativeEvent) {
-    let stoneCoordinates = this.closestCellCoordinatesFromNativeEvent(nativeEvent);
-    let index = this.closestCellIndex(stoneCoordinates);
-    let moves = _.concat(this.state.moves, {
-      x: index.x,
-      y: index.y,
-      color: this.state.currentColor
-    });
-    this.setState({moves: moves, currentColor: this.state.currentColor === 1 ? -1 : 1});
+    let index = this.closestCellIndex(this.selectedCellCoordinates);
+    // If index is in bounds
+    // if (this.indexInBounds(index)) {
+      let moves = _.concat(this.state.moves, {
+        x: index.x,
+        y: index.y,
+        color: this.state.currentColor
+      });
+      this.setState({moves: moves, currentColor: this.state.currentColor === 1 ? -1 : 1});
+    // }
+  }
+
+  indexInBounds(index) {
+    return 0 <= index.x && index.x < this.props.size && 0 <= index.y && index.y < this.props.size;
+  }
+  
+  selectedStoneState() {
+    return this.state.currentColor === 1 ? this.selectionBlackStone : this.selectionWhiteStone;
+  }
+
+  unselectedStoneState() {
+    return this.state.currentColor === -1 ? this.selectionBlackStone : this.selectionWhiteStone;
   }
 
   handPickerCoordinates(nativeEvent) {
@@ -131,44 +160,8 @@ export default class Board extends Component {
     return this.closestCellCoordinates(stoneCoordinates);
   }
 
-  renderHorizontalLine(index, spaceBetweenLines) {
-    return (<View style={{
-      position: 'absolute',
-      left: padding,
-      width: this.props.width - 2 * padding,
-      height: lineHeight,
-      top: padding + index * (lineHeight + spaceBetweenLines),
-      backgroundColor: 'black'}}
-      key={"h" + index} />);
-  }
-
-  renderVerticalLine(index, spaceBetweenLines) {
-    return (<View style={{
-      position: 'absolute',
-      top: padding,
-      width: lineHeight,
-      height: this.props.height - 2 * padding,
-      left: padding + index * (lineHeight + spaceBetweenLines),
-      backgroundColor: 'black'}}
-      key={"v" + index} />);
-  }
-
-  renderLines() {
-    let spaceBetweenLines = (this.props.height - this.props.size * lineHeight - 2 * padding) / (this.props.size - 1);
-    var lines = [];
-    // Vertical lines
-    for (var i = 0; i < this.props.size; i ++) {
-      lines.push(this.renderVerticalLine(i, spaceBetweenLines));
-    }
-    // Horizontal lines
-    for (var i = 0; i < this.props.size; i ++) {
-      lines.push(this.renderHorizontalLine(i, spaceBetweenLines));
-    }
-    return lines;
-  }
-
   renderHandPicker() {
-    let { xy, scale, opacity }  = this.state.handPicker;
+    let { xy, scale, opacity }  = this.handPicker;
     let [translateX, translateY] = [xy.x, xy.y];
 
     var imageStyle = [styles.handPicker, {
@@ -177,35 +170,19 @@ export default class Board extends Component {
     return <Animated.Image style={imageStyle} source={require('./img/hand_picker.png')} />
   }
 
-  renderStones() {
-    let stones = _.map(this.state.moves, (move, key) => {
-      var index = {
-        x: move.x,
-        y: move.y
-      };
-      let xy = this.stoneCoordinatesFromIndex(index);
-      let imageStyle = [styles.stone, {transform: [{translateX: xy.x}, {translateY: xy.y}]}];
-      return this.renderNormalStone(imageStyle, move.color, key);
-    });
-    return stones;
-  }
-
-  renderSelectionStone() {
-    let { xy, scale, opacity }  = this.state.stone;
+  renderSelectionStone(stone, color, key) {
+    let { xy, scale, opacity }  = stone;
     let [translateX, translateY] = [xy.x, xy.y];
 
     var imageStyle = [styles.stone, {
       transform: [{translateX}, {translateY}, {scale}]
     }, {opacity}];
-    return this.renderNormalStone(imageStyle, this.state.currentColor, "-1");
+    return Stones.renderNormalStone(imageStyle, color, key);
   }
 
-  renderNormalStone(imageStyle, stoneColor, key) {
-    if (stoneColor === 1) {
-      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/black_stone.png')} />
-    } else {
-      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/white_stone.png')} />
-    }
+  renderSelectionStones() {
+    return [this.renderSelectionStone(this.selectionBlackStone, 1, 's1'),
+      this.renderSelectionStone(this.selectionWhiteStone, -1, 's-1')];
   }
 
   render() {
@@ -219,8 +196,8 @@ export default class Board extends Component {
       }}
       {...this._panResponder.panHandlers}>
         <Grid width={this.props.width} size={this.props.size} />
-        {this.renderStones()}
-        {this.renderSelectionStone()}
+        <Stones width={this.props.width} size={this.props.size} moves={this.state.moves} />
+        {this.renderSelectionStones()}
         {this.renderHandPicker()}
       </View>
     );
