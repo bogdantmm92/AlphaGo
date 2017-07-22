@@ -71,13 +71,6 @@ export default class Board extends Component {
         let newSelectedCellCoordinates = this.closestCellCoordinatesFromNativeEvent(evt.nativeEvent);
         let index = this.closestCellIndex(newSelectedCellCoordinates);
 
-        // If we transition from outside to inside, animate in the cursors
-        if (this.selectedCellCoordinates.x === -1000 && this.indexInBounds(index)) {
-          selectionInAnimation(this.selectedStoneState(), this.handPicker);
-        }
-
-        this.selectedCellCoordinates = newSelectedCellCoordinates;
-
         if (this.indexInBounds(index)) {
           this.selectedStoneState().xy.setValue({
             x: this.selectedCellCoordinates.x,
@@ -88,11 +81,21 @@ export default class Board extends Component {
             dx: this.handPicker.xy.x,
             dy: this.handPicker.xy.y
           }])(evt, gestureState);
+
+          // If we transition from outside to inside, show the cursors
+          if (this.selectedCellCoordinates.x === -1000) {
+            selectionInAnimation(this.selectedStoneState(), this.handPicker);
+          }
         } else {
-          this.selectedStoneState().opacity.setValue(0);
-          this.handPicker.opacity.setValue(0);
-          this.selectedCellCoordinates = {x: -1000, y: -1000};
+          // If we transition from inside to outside, hide in the cursors
+          if (this.selectedCellCoordinates.x >= 0) {
+            this.selectedStoneState().opacity.setValue(0);
+            this.handPicker.opacity.setValue(0);
+          }
+          newSelectedCellCoordinates = {x: -1000, y: -1000};
         }
+
+        this.selectedCellCoordinates = newSelectedCellCoordinates;
       },
       onPanResponderRelease: (evt, gestureState) => {
         this.handPicker.xy.flattenOffset();
