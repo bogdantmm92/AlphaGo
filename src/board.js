@@ -68,10 +68,17 @@ export default class Board extends Component {
         selectionInAnimation(this.selectedStoneState(), this.handPicker);
       },
       onPanResponderMove: (evt, gestureState) => {
-        this.selectedCellCoordinates = this.closestCellCoordinatesFromNativeEvent(evt.nativeEvent);
-        let index = this.closestCellIndex(this.selectedCellCoordinates);
+        let newSelectedCellCoordinates = this.closestCellCoordinatesFromNativeEvent(evt.nativeEvent);
+        let index = this.closestCellIndex(newSelectedCellCoordinates);
 
-        // if (this.indexInBounds(index)) {
+        // If we transition from outside to inside, animate in the cursors
+        if (this.selectedCellCoordinates.x === -1000 && this.indexInBounds(index)) {
+          selectionInAnimation(this.selectedStoneState(), this.handPicker);
+        }
+
+        this.selectedCellCoordinates = newSelectedCellCoordinates;
+
+        if (this.indexInBounds(index)) {
           this.selectedStoneState().xy.setValue({
             x: this.selectedCellCoordinates.x,
             y: this.selectedCellCoordinates.y
@@ -81,38 +88,39 @@ export default class Board extends Component {
             dx: this.handPicker.xy.x,
             dy: this.handPicker.xy.y
           }])(evt, gestureState);
-        // } else {
-        //   this.selectedStoneState().opacity.setValue(0);
-        //   this.handPicker.opacity.setValue(0);
-        // }
+        } else {
+          this.selectedStoneState().opacity.setValue(0);
+          this.handPicker.opacity.setValue(0);
+          this.selectedCellCoordinates = {x: -1000, y: -1000};
+        }
       },
       onPanResponderRelease: (evt, gestureState) => {
-        this.onDropStone(evt.nativeEvent);
         this.handPicker.xy.flattenOffset();
         this.selectedStoneState().xy.flattenOffset();
 
-        selectionOutAnimation(this.selectedStoneState(), this.handPicker);
+        this.onDropStone();
       },
     });
   }
 
-  onDropStone(nativeEvent) {
+  onDropStone() {
     let index = this.closestCellIndex(this.selectedCellCoordinates);
     // If index is in bounds
-    // if (this.indexInBounds(index)) {
+    if (this.indexInBounds(index)) {
       let moves = _.concat(this.state.moves, {
         x: index.x,
         y: index.y,
         color: this.state.currentColor
       });
       this.setState({moves: moves, currentColor: this.state.currentColor === 1 ? -1 : 1});
-    // }
+      selectionOutAnimation(this.selectedStoneState(), this.handPicker);
+    }
   }
 
   indexInBounds(index) {
     return 0 <= index.x && index.x < this.props.size && 0 <= index.y && index.y < this.props.size;
   }
-  
+
   selectedStoneState() {
     return this.state.currentColor === 1 ? this.selectionBlackStone : this.selectionWhiteStone;
   }
