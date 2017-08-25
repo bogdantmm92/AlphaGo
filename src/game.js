@@ -24,7 +24,7 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Board size={19} width={width} height={width} />
+        <Board size={13} width={width} height={width} />
       </View>
     );
   }
