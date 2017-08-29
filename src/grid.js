@@ -17,7 +17,7 @@ export default class Grid extends PureComponent {
   constructor() {
     super();
     var dots9 = [ {x: 2, y: 2}, {x: 2, y: 6}, {x: 4, y: 4}, {x: 6, y: 2}, {x: 6, y: 6} ];
-    var dots13 = [ {x: 3, y: 3}, {x: 3, y: 12}, {x: 7, y: 7}, {x: 12, y: 3}, {x: 12, y: 12} ];
+    var dots13 = [ {x: 3, y: 3}, {x: 3, y: 9}, {x: 6, y: 6}, {x: 9, y: 3}, {x: 9, y: 9} ];
     var dots19 = [ {x: 3, y: 3}, {x: 3, y: 9}, {x: 3, y: 15}, {x: 9, y: 3}, {x: 9, y: 9}, {x: 9, y: 15}, {x: 15, y: 3}, {x: 15, y: 9}, {x: 15, y: 15} ];
     this.dots = [];
     this.dots[9] = dots9;
@@ -50,11 +50,11 @@ export default class Grid extends PureComponent {
   renderDot(id, xx, yy, spaceBetweenLines) {
     return(<View style={{
       position: 'absolute',
-      top: padding + yy * (lineHeight + spaceBetweenLines) - 5 + lineHeight / 2,
-      width: 10,
-      height: 10,
-      left: padding + xx * (lineHeight + spaceBetweenLines) - 5 + lineHeight / 2,
-      borderRadius: 10/2,
+      top: padding + yy * (lineHeight + spaceBetweenLines) - 4 + lineHeight / 2,
+      width: 8,
+      height: 8,
+      left: padding + xx * (lineHeight + spaceBetweenLines) - 4 + lineHeight / 2,
+      borderRadius: 8/2,
       backgroundColor: 'black'}}
       key={"d" + id} />);
   }

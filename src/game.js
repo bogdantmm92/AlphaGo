@@ -13,6 +13,7 @@ import io from 'socket.io-client';
 
 import Board from './board';
 import CONST from './const';
+import {SIZE} from './const';
 
 var {height, width} = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Board size={13} width={width} height={width} />
+        <Board size={SIZE} width={width} height={width} />
       </View>
     );
   }
