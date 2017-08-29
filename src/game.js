@@ -12,7 +12,6 @@ import {
 import io from 'socket.io-client';
 
 import Board from './board';
-import CONST from './const';
 
 var {height, width} = Dimensions.get('window');
 

@@ -142,12 +142,13 @@ export default class Board extends Component {
   stoneCoordinates(handPickerCoordinates) {
     return {
       x: handPickerCoordinates.x + handPickerWidth * 0.25,
-      y: handPickerCoordinates.y - stoneSize * 0.4
+      y: handPickerCoordinates.y - this.getStoneSize() * 0.4
     }
   }
 
   stoneCoordinatesFromIndex(index) {
-    let spaceBetweenLines = (this.props.width - this.props.size * lineHeight - 2 * padding) / (this.props.size - 1);
+    let spaceBetweenLines = this.getSpaceBetweenLines();
+    let stoneSize = this.getStoneSize();
     return {
       x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneSize / 2,
       y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneSize / 2
@@ -155,7 +156,8 @@ export default class Board extends Component {
   }
 
   closestCellIndex(coordinates) {
-    let spaceBetweenLines = (this.props.width - this.props.size * lineHeight - 2 * padding) / (this.props.size - 1);
+    let spaceBetweenLines = this.getSpaceBetweenLines();
+    let stoneSize = this.getStoneSize();
     return {
       x: Math.round((coordinates.x - padding + stoneSize / 2) / (lineHeight + spaceBetweenLines)),
       y: Math.round((coordinates.y - padding + stoneSize / 2) / (lineHeight + spaceBetweenLines))
@@ -171,6 +173,14 @@ export default class Board extends Component {
     return this.closestCellCoordinates(stoneCoordinates);
   }
 
+  getSpaceBetweenLines() {
+    return (this.props.width - this.props.size * lineHeight - 2 * padding) / (this.props.size - 1);
+  }
+
+  getStoneSize() {
+    return 0.95 * this.getSpaceBetweenLines();
+  }
+
   renderHandPicker() {
     let { xy, scale, opacity }  = this.handPicker;
     let [translateX, translateY] = [xy.x, xy.y];
@@ -184,8 +194,11 @@ export default class Board extends Component {
   renderSelectionStone(stone, color, key) {
     let { xy, scale, opacity }  = stone;
     let [translateX, translateY] = [xy.x, xy.y];
+    let stoneSize = this.getStoneSize();
 
     var imageStyle = [styles.stone, {
+      width: stoneSize,
+      height: stoneSize,
       transform: [{translateX}, {translateY}, {scale}]
     }, {opacity}];
     return Stones.renderNormalStone(imageStyle, color, key);
@@ -222,8 +235,6 @@ const styles = StyleSheet.create({
     height: handPickerHeight
   },
   stone: {
-    position: 'absolute',
-    width: stoneSize,
-    height: stoneSize
+    position: 'absolute'
   }
 });
