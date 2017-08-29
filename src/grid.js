@@ -54,7 +54,7 @@ export default class Grid extends PureComponent {
       width: 8,
       height: 8,
       left: padding + xx * (lineHeight + spaceBetweenLines) - 4 + lineHeight / 2,
-      borderRadius: 8/2,
+      borderRadius: 4,
       backgroundColor: 'black'}}
       key={"d" + id} />);
   }
@@ -83,14 +83,6 @@ export default class Grid extends PureComponent {
     });
     return dots;
   }
-
-/*  renderNormalStone(imageStyle, stoneColor, key) {
-    if (stoneColor === 1) {
-      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/black_stone.png')} />
-    } else {
-      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/white_stone.png')} />
-    }
-  }*/
 
   render() {
     return (
