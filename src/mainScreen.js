@@ -7,7 +7,10 @@ import {
   View,
   TouchableOpacity,
   AsyncStorage,
-  Dimensions
+  Dimensions,
+  Button,
+  TouchableNativeFeedback,
+  TouchableOpacity
 } from 'react-native';
 
 import io from 'socket.io-client';
