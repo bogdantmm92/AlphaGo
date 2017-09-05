@@ -6,7 +6,10 @@ import {
   Text,
   View,
   AsyncStorage,
-  Dimensions
+  Dimensions,
+  Button,
+  TouchableNativeFeedback,
+  TouchableOpacity
 } from 'react-native';
 
 import io from 'socket.io-client';
@@ -79,10 +82,21 @@ export default class MainScreen extends Component {
         }
     });
   }
-
+  handlePress(){
+    return;
+  }
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.buttons}>
+          <Button
+            title="Actual score"
+            containerStyle={{padding:10, height:45, overflow:'hidden', borderRadius:20, backgroundColor: 'white'}}
+            onPress={() => this.handlePress()}
+            color='yellow'
+          />
+          <Button title="Estimate score" margin="10" style={{margin: 10, height: 10, widht: 20, borderRadius: 2}} onPress={() => this.handlePress()}/>
+        </View>
         <Game />
       </View>
     );
@@ -95,6 +109,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  buttons: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   welcome: {
     fontSize: 20,
