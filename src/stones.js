@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 
 import _ from 'lodash';
-import {lineHeight, padding, handPickerWidth, handPickerHeight} from './const';
-import {selectionInAnimation, selectionOutAnimation} from './animations';
+import {lineHeight, padding} from './const';
 import Grid from './grid';
 
 export default class Stones extends PureComponent {
@@ -69,11 +68,6 @@ export default class Stones extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  handPicker: {
-    position: 'absolute',
-    width: handPickerWidth,
-    height: handPickerHeight
-  },
   stone: {
     position: 'absolute'
   }

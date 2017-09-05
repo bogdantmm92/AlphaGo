@@ -14,12 +14,18 @@ import {lineHeight, padding, handPickerWidth, handPickerHeight, stoneSize} from 
 import {selectionInAnimation, selectionOutAnimation} from './animations';
 import Grid from './grid';
 import Stones from './stones';
+import territoryHighlight from './territoryHighlight';
 
 export default class Board extends Component {
   constructor(){
     super();
     this.state = {
       moves: [],
+      territory: [
+        {x: 1, y: 2, 'black'},
+        {x: 0, y: 1, 'white'},
+        {x: 3, y: 2, 'black'}
+      ],
       currentColor: 1
     };
     this.handPicker = {
@@ -221,6 +227,7 @@ export default class Board extends Component {
       {...this._panResponder.panHandlers}>
         <Grid width={this.props.width} size={this.props.size} />
         <Stones width={this.props.width} size={this.props.size} moves={this.state.moves} />
+        <TerritoryHighlight width={this.props.width} size={this.props.size} territory={this.state.territory} />
         {this.renderSelectionStones()}
         {this.renderHandPicker()}
       </View>
