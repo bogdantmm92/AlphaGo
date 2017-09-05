@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 
 import io from 'socket.io-client';
-
+import InfoBar from './infobar';
+import WaitingUser from './waitinguser';
 import Board from './board';
 
 var {height, width} = Dimensions.get('window');
@@ -23,7 +24,9 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <WaitingUser />
         <Board size={19} width={width} height={width} />
+        <InfoBar />
       </View>
     );
   }
