@@ -17,10 +17,10 @@ import Grid from './grid';
 export default class TerritoryHighlight extends PureComponent {
   territoryCellCoordinatesFromIndex(index) {
     let spaceBetweenLines = this.getSpaceBetweenLines();
-    let territoryCellSize = this.getterritoryCellSize();
+    let territoryCellSize = this.getTerritoryCellSize();
     return {
-      x: padding + index.x * (lineHeight + spaceBetweenLines) - territoryCellSize / 2,
-      y: padding + index.y * (lineHeight + spaceBetweenLines) - territoryCellSize / 2
+      x: padding + index.x * (lineHeight + spaceBetweenLines) - territoryCellSize / 2 + lineHeight / 2,
+      y: padding + index.y * (lineHeight + spaceBetweenLines) - territoryCellSize / 2 + lineHeight / 2
     }
   }
 
@@ -29,7 +29,7 @@ export default class TerritoryHighlight extends PureComponent {
   }
 
   getTerritoryCellSize() {
-    return 0.2 * this.getSpaceBetweenLines();
+    return 0.5 * this.getSpaceBetweenLines();
   }
 
   renderTerritory() {
@@ -44,7 +44,7 @@ export default class TerritoryHighlight extends PureComponent {
       let cellStyle = [styles.stone, {
         width: territoryCellSize,
         height: territoryCellSize,
-        backgroundColor: "#" + cell.color,
+        backgroundColor: cell.color,
         transform: [{translateX: xy.x}, {translateY: xy.y}]
       }];
       return <View style={cellStyle} />;

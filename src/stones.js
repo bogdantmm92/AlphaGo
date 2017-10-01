@@ -18,8 +18,8 @@ export default class Stones extends PureComponent {
     let spaceBetweenLines = this.getSpaceBetweenLines();
     let stoneSize = this.getStoneSize();
     return {
-      x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneSize / 2,
-      y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneSize / 2
+      x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneSize / 2 + lineHeight / 2,
+      y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneSize / 2 + lineHeight / 2
     }
   }
 
