@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
   AsyncStorage,
   Dimensions
 } from 'react-native';
@@ -17,8 +18,16 @@ import {SERVER_URL} from './const';
 var {height, width} = Dimensions.get('window');
 
 export default class MainScreen extends Component {
-  static navigationOptions = {
-    title: 'Welcome',
+  static navigationOptions = (props) => {
+    return {
+      headerTitle: 'Alpha Go',
+      headerTitleStyle: {
+        color: 'white'
+      },
+      headerStyle: {
+        backgroundColor: '#3CB2E2'
+      }
+    };
   };
 
   constructor(props) {
@@ -80,10 +89,17 @@ export default class MainScreen extends Component {
     });
   }
 
+  startGame() {
+    const {navigate} = this.props.navigation;
+    navigate('Game');
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Game />
+        <TouchableOpacity onPress={this.startGame.bind(this)} activeOpacity={0.7}>
+          <Text style={styles.playNowButton}>PLAY NOW</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -96,9 +112,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 50,
+  playNowButton: {
+    backgroundColor: '#C0DB99',
+    paddingRight: 40,
+    paddingLeft: 40,
+    paddingTop: 10,
+    paddingBottom: 10,
+    color: '#545454',
+    fontWeight: 'bold',
+    fontSize: 24,
+    borderColor: '#88AB4E',
+    borderRadius: 6,
+    borderWidth: 3,
   }
 });
