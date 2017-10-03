@@ -26,7 +26,7 @@ export default class Game extends Component {
       <View style={styles.container}>
         <WaitingUser />
         <Board size={19} width={width} height={width} />
-        <InfoBar />
+        <InfoBar UserName="Olaru Bogdan" avatarUrl={require('./img/bogdan.jpg')}/>
       </View>
     );
   }

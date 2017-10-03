@@ -6,21 +6,22 @@ import {
   Image,
   View
 } from 'react-native';
+import CountDown from './countdown.js'
 
 export default class InfoBar extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
   }
   renderPicture(){
     return(
       <View style={styles.picture}>
-        <Image source={require('./img/bogdan.jpg')} style={{height: 30, width: 30, borderRadius: 30/2,}}/>
+        <Image source={this.props.avatarUrl} style={styles.avatar}/>
       </View>
     );
   }
   renderName(){
     return(
-        <Text style={styles.nume}>Olaru Bogdan</Text>
+        <Text style={styles.nume}>{this.props.UserName}</Text>
     );
   }
   renderUserInfo(){
@@ -33,9 +34,9 @@ export default class InfoBar extends Component {
   }
   renderTime(){
     return(
-      <Text style={styles.time}>
-        2:30
-      </Text>
+      <View>
+        <CountDown turn={true}/>
+      </View>
     );
   }
   render() {
@@ -48,6 +49,11 @@ export default class InfoBar extends Component {
   }
 }
 const styles = StyleSheet.create({
+  avatar: {
+    height: 30,
+    width: 30,
+    borderRadius: 30/2,
+  },
   bar: {
     padding: 3,
     flexDirection: 'row',

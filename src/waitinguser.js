@@ -14,7 +14,7 @@ export default class WaitingUser extends Component {
   renderPicture(){
     return(
       <View style={styles.picture}>
-        <Image source={require('./img/Icon-user.png')} style={{height: 30, width: 30, borderRadius: 30/2,}}/>
+        <Image source={require('./img/Icon-user.png')} style={styles.avatar}/>
       </View>
     );
   }
@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  avatar: {
+    height: 30,
+    width: 30,
+    borderRadius: 30/2,
   },
   wait: {
     padding: 2,
