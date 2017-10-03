@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 
 import _ from 'lodash';
-import {lineHeight, padding, handPickerWidth, handPickerHeight} from './const';
-import {selectionInAnimation, selectionOutAnimation} from './animations';
+import {lineHeight, padding} from './const';
 import Grid from './grid';
 
 export default class Stones extends PureComponent {
@@ -19,8 +18,8 @@ export default class Stones extends PureComponent {
     let spaceBetweenLines = this.getSpaceBetweenLines();
     let stoneSize = this.getStoneSize();
     return {
-      x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneSize / 2,
-      y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneSize / 2
+      x: padding + index.x * (lineHeight + spaceBetweenLines) - stoneSize / 2 + lineHeight / 2,
+      y: padding + index.y * (lineHeight + spaceBetweenLines) - stoneSize / 2 + lineHeight / 2
     }
   }
 
@@ -69,11 +68,6 @@ export default class Stones extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  handPicker: {
-    position: 'absolute',
-    width: handPickerWidth,
-    height: handPickerHeight
-  },
   stone: {
     position: 'absolute'
   }

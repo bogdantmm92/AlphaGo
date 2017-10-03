@@ -48,13 +48,14 @@ export default class Grid extends PureComponent {
   }
 
   renderDot(id, xx, yy, spaceBetweenLines) {
+    let dotSize = 8;
     return(<View style={{
       position: 'absolute',
-      top: padding + yy * (lineHeight + spaceBetweenLines) - 4 + lineHeight / 2,
-      width: 8,
-      height: 8,
-      left: padding + xx * (lineHeight + spaceBetweenLines) - 4 + lineHeight / 2,
-      borderRadius: 4,
+      top: padding + yy * (lineHeight + spaceBetweenLines) - dotSize / 2 + lineHeight / 2,
+      width: dotSize,
+      height: dotSize,
+      left: padding + xx * (lineHeight + spaceBetweenLines) - dotSize / 2 + lineHeight / 2,
+      borderRadius: dotSize / 2,
       backgroundColor: 'black'}}
       key={"d" + id} />);
   }

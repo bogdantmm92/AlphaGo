@@ -14,12 +14,47 @@ import {lineHeight, padding, handPickerWidth, handPickerHeight, stoneSize} from 
 import {selectionInAnimation, selectionOutAnimation} from './animations';
 import Grid from './grid';
 import Stones from './stones';
+import TerritoryHighlight from './territoryHighlight';
 
 export default class Board extends Component {
   constructor(){
     super();
     this.state = {
       moves: [],
+      // TODO(bogdantirca92) Replace this with server side results
+      territory: [
+        {x: 0, y: 0, color: 'black'},
+        {x: 0, y: 1, color: 'black'},
+        {x: 0, y: 2, color: 'black'},
+        {x: 0, y: 3, color: 'black'},
+        {x: 1, y: 0, color: 'black'},
+        {x: 1, y: 1, color: 'black'},
+        {x: 1, y: 2, color: 'black'},
+        {x: 1, y: 3, color: 'black'},
+        {x: 2, y: 0, color: 'black'},
+        {x: 2, y: 1, color: 'black'},
+        {x: 2, y: 2, color: 'black'},
+        {x: 2, y: 3, color: 'black'},
+
+        {x: 6, y: 0, color: 'white'},
+        {x: 6, y: 1, color: 'white'},
+        {x: 6, y: 2, color: 'white'},
+        {x: 6, y: 3, color: 'white'},
+        {x: 7, y: 0, color: 'white'},
+        {x: 7, y: 1, color: 'white'},
+        {x: 7, y: 2, color: 'white'},
+        {x: 7, y: 3, color: 'white'},
+        {x: 8, y: 0, color: 'white'},
+        {x: 8, y: 1, color: 'white'},
+        {x: 8, y: 2, color: 'white'},
+        {x: 8, y: 3, color: 'white'},
+        {x: 9, y: 0, color: 'white'},
+        {x: 9, y: 1, color: 'white'},
+        {x: 9, y: 2, color: 'white'},
+        {x: 9, y: 3, color: 'white'},
+        {x: 10, y: 1, color: 'white'},
+        {x: 10, y: 2, color: 'white'}
+      ],
       currentColor: 1
     };
     this.handPicker = {
@@ -221,6 +256,7 @@ export default class Board extends Component {
       {...this._panResponder.panHandlers}>
         <Grid width={this.props.width} size={this.props.size} />
         <Stones width={this.props.width} size={this.props.size} moves={this.state.moves} />
+        <TerritoryHighlight width={this.props.width} size={this.props.size} territory={this.state.territory} />
         {this.renderSelectionStones()}
         {this.renderHandPicker()}
       </View>
