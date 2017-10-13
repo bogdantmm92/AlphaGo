@@ -47,7 +47,7 @@ export default class TerritoryHighlight extends PureComponent {
         backgroundColor: cell.color,
         transform: [{translateX: xy.x}, {translateY: xy.y}]
       }];
-      return <View style={cellStyle} />;
+      return <View key={"th" + key} style={cellStyle} />;
     });
     return territoryCells;
   }
