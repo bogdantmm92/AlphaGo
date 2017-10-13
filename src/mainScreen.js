@@ -9,8 +9,7 @@ import {
   AsyncStorage,
   Dimensions,
   Button,
-  TouchableNativeFeedback,
-  TouchableOpacity
+  TouchableNativeFeedback
 } from 'react-native';
 
 import io from 'socket.io-client';
