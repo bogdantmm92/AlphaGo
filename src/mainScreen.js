@@ -20,6 +20,7 @@ import {SERVER_URL} from './const';
 var {height, width} = Dimensions.get('window');
 
 import Board from './game/board';
+import FacebookSection from './facebookSection';
 
 export default class MainScreen extends Component {
   static navigationOptions = (props) => {
@@ -107,12 +108,9 @@ export default class MainScreen extends Component {
         <TouchableOpacity style={styles.playNowButton} onPress={this.startGame.bind(this)} activeOpacity={0.7}>
           <Text style={styles.playNowText}>PLAY NOW</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.facebookButton} onPress={() => {}} activeOpacity={0.7}>
-          <View style={styles.facebookButtonWrapper}>
-            <Image style={styles.facebookImage} source={require('./img/facebook.png')} />
-            <Text style={styles.facebookText}>Connect with Facebook</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.facebookSection}>
+          <FacebookSection />
+        </View>
       </View>
     );
   }
@@ -122,10 +120,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: 'white'
   },
   board: {
-    marginTop: 40,
-    marginBottom: 40
+    marginTop: 30,
+    marginBottom: 30
   },
   playNowButton: {
     backgroundColor: '#EF5350',
@@ -142,28 +141,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 24
   },
-  facebookButton: {
-    backgroundColor: '#3B5998',
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderColor: '#0E285E',
-    borderRadius: 6,
-    borderWidth: 1,
-  },
-  facebookText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 16
-  },
-  facebookButtonWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  facebookImage: {
-    width: 12,
-    height: 28,
-    marginRight: 16
+  facebookSection: {
+    alignSelf: 'stretch',
+    marginTop: 80,
   }
 });
