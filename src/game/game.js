@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 
 import io from 'socket.io-client';
-
+import InfoBar from './infobar';
+import WaitingUser from './waitinguser';
 import Board from './board';
 
 var {height, width} = Dimensions.get('window');
@@ -23,7 +24,10 @@ export default class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <WaitingUser />
         <Board size={19} width={width} height={width} />
+        <InfoBar userName="Olaru Bogdan" userAvatarUrl="https://scontent.fotp3-1.fna.fbcdn.net/v/t1.0-9/23754911_1686874304689488_466414949983210768_n.jpg?oh=9c98d1b54d9b4f8612b1eb40567442a5&oe=5ABE01C0"
+          onTimeout={() => {}}/>
       </View>
     );
   }
@@ -32,7 +36,6 @@ export default class Game extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },

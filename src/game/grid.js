@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import _ from 'lodash';
-import {lineHeight, padding} from './const';
+import {lineHeight, padding} from '../const';
 import {selectionInAnimation, selectionOutAnimation} from './animations';
 
 export default class Grid extends PureComponent {

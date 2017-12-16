@@ -11,7 +11,7 @@ import {
 import { StackNavigator } from 'react-navigation';
 
 import MainScreen from './src/mainScreen.js'
-import GameScreen from './src/gameScreen.js'
+import GameScreen from './src/game/gameScreen.js'
 
 GameScreen.navigationOptions = MainScreen.navigationOptions = (props) => {
   const { state, setParams } = props.navigation;

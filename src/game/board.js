@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import _ from 'lodash';
-import {lineHeight, padding, handPickerWidth, handPickerHeight, stoneSize} from './const';
+import {lineHeight, padding, handPickerWidth, handPickerHeight, stoneSize} from '../const';
 import {selectionInAnimation, selectionOutAnimation} from './animations';
 import Grid from './grid';
 import Stones from './stones';
@@ -223,7 +223,7 @@ export default class Board extends Component {
     var imageStyle = [styles.handPicker, {
       transform: [{translateX}, {translateY}, {scale}]
     }, {opacity}];
-    return <Animated.Image style={imageStyle} source={require('./img/hand_picker.png')} />
+    return <Animated.Image style={imageStyle} source={require('../img/hand_picker.png')} />
   }
 
   renderSelectionStone(stone, color, key) {

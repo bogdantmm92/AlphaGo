@@ -7,12 +7,13 @@ import {
   View,
   TouchableOpacity,
   AsyncStorage,
-  Dimensions
+  Dimensions,
+  Button,
+  TouchableNativeFeedback
 } from 'react-native';
 
 import io from 'socket.io-client';
 
-import Game from './game';
 import {SERVER_URL} from './const';
 
 var {height, width} = Dimensions.get('window');

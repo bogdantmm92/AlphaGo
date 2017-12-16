@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import _ from 'lodash';
-import {lineHeight, padding, handPickerWidth, handPickerHeight} from './const';
+import {lineHeight, padding, handPickerWidth, handPickerHeight} from '../const';
 import {selectionInAnimation, selectionOutAnimation} from './animations';
 import Grid from './grid';
 
