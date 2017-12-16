@@ -9,6 +9,7 @@ import {
   AsyncStorage,
   Dimensions,
   Button,
+  Image,
   TouchableNativeFeedback
 } from 'react-native';
 
@@ -17,6 +18,8 @@ import io from 'socket.io-client';
 import {SERVER_URL} from './const';
 
 var {height, width} = Dimensions.get('window');
+
+import Board from './game/board';
 
 export default class MainScreen extends Component {
   static navigationOptions = (props) => {
@@ -98,8 +101,17 @@ export default class MainScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.startGame.bind(this)} activeOpacity={0.7}>
-          <Text style={styles.playNowButton}>PLAY NOW</Text>
+        <View style={styles.board}>
+          <Board size={13} width={200} height={200} disabled/>
+        </View>
+        <TouchableOpacity style={styles.playNowButton} onPress={this.startGame.bind(this)} activeOpacity={0.7}>
+          <Text style={styles.playNowText}>PLAY NOW</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.facebookButton} onPress={() => {}} activeOpacity={0.7}>
+          <View style={styles.facebookButtonWrapper}>
+            <Image style={styles.facebookImage} source={require('./img/facebook.png')} />
+            <Text style={styles.facebookText}>Connect with Facebook</Text>
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -109,21 +121,49 @@ export default class MainScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  },
+  board: {
+    marginTop: 40,
+    marginBottom: 40
   },
   playNowButton: {
-    backgroundColor: '#C0DB99',
-    paddingRight: 40,
-    paddingLeft: 40,
+    backgroundColor: '#EF5350',
+    paddingRight: 55,
+    paddingLeft: 55,
     paddingTop: 10,
     paddingBottom: 10,
-    color: '#545454',
-    fontWeight: 'bold',
-    fontSize: 24,
-    borderColor: '#88AB4E',
+    borderColor: '#DD2C00',
     borderRadius: 6,
     borderWidth: 3,
+  },
+  playNowText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 24
+  },
+  facebookButton: {
+    backgroundColor: '#3B5998',
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderColor: '#0E285E',
+    borderRadius: 6,
+    borderWidth: 1,
+  },
+  facebookText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  facebookButtonWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  facebookImage: {
+    width: 12,
+    height: 28,
+    marginRight: 16
   }
 });

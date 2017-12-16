@@ -142,6 +142,10 @@ export default class Board extends Component {
   }
 
   onDropStone() {
+    if (this.props.disabled) {
+      return ;
+    }
+    
     let index = this.closestCellIndex(this.selectedCellCoordinates);
     // If index is in bounds
     if (this.indexInBounds(index)) {
@@ -217,6 +221,9 @@ export default class Board extends Component {
   }
 
   renderHandPicker() {
+    if (this.props.disabled) {
+      return ;
+    }
     let { xy, scale, opacity }  = this.handPicker;
     let [translateX, translateY] = [xy.x, xy.y];
 
@@ -227,6 +234,9 @@ export default class Board extends Component {
   }
 
   renderSelectionStone(stone, color, key) {
+    if (this.props.disabled) {
+      return ;
+    }
     let { xy, scale, opacity }  = stone;
     let [translateX, translateY] = [xy.x, xy.y];
     let stoneSize = this.getStoneSize();
@@ -247,7 +257,6 @@ export default class Board extends Component {
   render() {
     return (
       <View style={{
-        ...this.props.style,
         position: 'relative',
         width: this.props.width,
         height: this.props.height,
