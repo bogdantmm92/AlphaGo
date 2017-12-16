@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import _ from 'lodash';
-import {lineHeight, padding} from './const';
+import {lineHeight, padding} from '../const';
 import Grid from './grid';
 
 export default class Stones extends PureComponent {
@@ -52,9 +52,9 @@ export default class Stones extends PureComponent {
 
   static renderNormalStone(imageStyle, stoneColor, key) {
     if (stoneColor === 1) {
-      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/black_stone.png')} />
+      return <Animated.Image key={"s" + key} style={imageStyle} source={require('../img/black_stone.png')} />
     } else {
-      return <Animated.Image key={"s" + key} style={imageStyle} source={require('./img/white_stone.png')} />
+      return <Animated.Image key={"s" + key} style={imageStyle} source={require('../img/white_stone.png')} />
     }
   }
 

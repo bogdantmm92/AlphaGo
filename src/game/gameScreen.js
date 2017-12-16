@@ -12,7 +12,7 @@ import {
 import io from 'socket.io-client';
 
 import Game from './game';
-import {SERVER_URL} from './const';
+import {SERVER_URL} from '../const';
 
 var {height, width} = Dimensions.get('window');
 

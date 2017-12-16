@@ -27,38 +27,34 @@ export default class InfoBar extends Component {
   renderUserInfo(){
     return(
       <View style={styles.userInfo}>
-        {this.renderPicture()}
-        {this.renderName()}
+        <Image style={styles.avatar} source={{uri: this.props.userAvatarUrl}} />
+        <Text style={styles.name}>{this.props.userName}</Text>
       </View>
     );
   }
-  renderTime(){
-    return(
-      <View>
-        <CountDown turn={true}/>
-      </View>
-    );
-  }
+
   render() {
     return (
-      <View style={styles.bar}>
+      <View style={styles.container}>
         {this.renderUserInfo()}
-        {this.renderTime()}
+        <CountDown running={true} seconds={14} onTimeout={() => {}}/>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
+  container: {
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   avatar: {
     height: 30,
     width: 30,
     borderRadius: 30/2,
-  },
-  bar: {
-    padding: 3,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    marginLeft: 4,
+    marginRight: 4
   },
   time: {
     padding: 3,
@@ -69,10 +65,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  nume: {
-    padding: 2,
+  name: {
+    fontWeight: 'bold',
+    color: '#545454',
   },
-  picture: {
-    padding: 2,
-  }
 });
