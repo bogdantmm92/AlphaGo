@@ -21,6 +21,7 @@ var {height, width} = Dimensions.get('window');
 
 import Board from './game/board';
 import FacebookSection from './facebookSection';
+import BoardSizeModal from './boardSizeModal';
 
 export default class MainScreen extends Component {
   static navigationOptions = (props) => {
@@ -37,8 +38,13 @@ export default class MainScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {user: null};
+    this.state = {
+      user: null,
+      boardSizeModalShown: false
+    };
     this.setupSocket();
+    this.chooseBoardSize = this.chooseBoardSize.bind(this);
+    this.startGame = this.startGame.bind(this);
   }
 
   setupSocket() {
@@ -94,9 +100,20 @@ export default class MainScreen extends Component {
     });
   }
 
-  startGame() {
+  chooseBoardSize() {
+    this.setState({boardSizeModalShown: true});
+  }
+
+  startGame(boardSize) {
+    console.log(boardSize);
     const {navigate} = this.props.navigation;
-    navigate('Game');
+    navigate('Game', {boardSize: boardSize});
+  }
+
+  renderBoardSizeModal() {
+    return this.state.boardSizeModalShown ?
+     <BoardSizeModal onBoardSizeSelected={this.startGame} closeModal={() => this.setState({boardSizeModalShown: false}) }/>
+     : null;
   }
 
   render() {
@@ -105,12 +122,13 @@ export default class MainScreen extends Component {
         <View style={styles.board}>
           <Board size={13} width={200} height={200} disabled/>
         </View>
-        <TouchableOpacity style={styles.playNowButton} onPress={this.startGame.bind(this)} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.playNowButton} onPress={this.chooseBoardSize} activeOpacity={0.7}>
           <Text style={styles.playNowText}>PLAY NOW</Text>
         </TouchableOpacity>
         <View style={styles.facebookSection}>
           <FacebookSection />
         </View>
+        {this.renderBoardSizeModal()}
       </View>
     );
   }

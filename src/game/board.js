@@ -23,37 +23,37 @@ export default class Board extends Component {
       moves: [],
       // TODO(bogdantirca92) Replace this with server side results
       territory: [
-        {x: 0, y: 0, color: 'black'},
-        {x: 0, y: 1, color: 'black'},
-        {x: 0, y: 2, color: 'black'},
-        {x: 0, y: 3, color: 'black'},
-        {x: 1, y: 0, color: 'black'},
-        {x: 1, y: 1, color: 'black'},
-        {x: 1, y: 2, color: 'black'},
-        {x: 1, y: 3, color: 'black'},
-        {x: 2, y: 0, color: 'black'},
-        {x: 2, y: 1, color: 'black'},
-        {x: 2, y: 2, color: 'black'},
-        {x: 2, y: 3, color: 'black'},
-
-        {x: 6, y: 0, color: 'white'},
-        {x: 6, y: 1, color: 'white'},
-        {x: 6, y: 2, color: 'white'},
-        {x: 6, y: 3, color: 'white'},
-        {x: 7, y: 0, color: 'white'},
-        {x: 7, y: 1, color: 'white'},
-        {x: 7, y: 2, color: 'white'},
-        {x: 7, y: 3, color: 'white'},
-        {x: 8, y: 0, color: 'white'},
-        {x: 8, y: 1, color: 'white'},
-        {x: 8, y: 2, color: 'white'},
-        {x: 8, y: 3, color: 'white'},
-        {x: 9, y: 0, color: 'white'},
-        {x: 9, y: 1, color: 'white'},
-        {x: 9, y: 2, color: 'white'},
-        {x: 9, y: 3, color: 'white'},
-        {x: 10, y: 1, color: 'white'},
-        {x: 10, y: 2, color: 'white'}
+        // {x: 0, y: 0, color: 'black'},
+        // {x: 0, y: 1, color: 'black'},
+        // {x: 0, y: 2, color: 'black'},
+        // {x: 0, y: 3, color: 'black'},
+        // {x: 1, y: 0, color: 'black'},
+        // {x: 1, y: 1, color: 'black'},
+        // {x: 1, y: 2, color: 'black'},
+        // {x: 1, y: 3, color: 'black'},
+        // {x: 2, y: 0, color: 'black'},
+        // {x: 2, y: 1, color: 'black'},
+        // {x: 2, y: 2, color: 'black'},
+        // {x: 2, y: 3, color: 'black'},
+        //
+        // {x: 6, y: 0, color: 'white'},
+        // {x: 6, y: 1, color: 'white'},
+        // {x: 6, y: 2, color: 'white'},
+        // {x: 6, y: 3, color: 'white'},
+        // {x: 7, y: 0, color: 'white'},
+        // {x: 7, y: 1, color: 'white'},
+        // {x: 7, y: 2, color: 'white'},
+        // {x: 7, y: 3, color: 'white'},
+        // {x: 8, y: 0, color: 'white'},
+        // {x: 8, y: 1, color: 'white'},
+        // {x: 8, y: 2, color: 'white'},
+        // {x: 8, y: 3, color: 'white'},
+        // {x: 9, y: 0, color: 'white'},
+        // {x: 9, y: 1, color: 'white'},
+        // {x: 9, y: 2, color: 'white'},
+        // {x: 9, y: 3, color: 'white'},
+        // {x: 10, y: 1, color: 'white'},
+        // {x: 10, y: 2, color: 'white'}
       ],
       currentColor: 1
     };
@@ -145,7 +145,7 @@ export default class Board extends Component {
     if (this.props.disabled) {
       return ;
     }
-    
+
     let index = this.closestCellIndex(this.selectedCellCoordinates);
     // If index is in bounds
     if (this.indexInBounds(index)) {
